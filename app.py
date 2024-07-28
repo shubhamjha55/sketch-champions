@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, render_template
 from socket_manager import init_socketio
-from routes import drawing, rooms
+from routes import drawing_collaborative, rooms_collaborative
 
 app = Flask(__name__)
 # app.config.from_object('config.Config')
@@ -10,8 +10,8 @@ app = Flask(__name__)
 init_socketio(app)
 
 # Register Blueprints
-app.register_blueprint(drawing.bp)
-app.register_blueprint(rooms.bp)
+app.register_blueprint(drawing_collaborative.bp)
+app.register_blueprint(rooms_collaborative.bp)
 
 # Route to serve the homepage
 @app.route('/')

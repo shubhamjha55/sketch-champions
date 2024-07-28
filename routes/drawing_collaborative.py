@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_socketio import join_room, leave_room, emit, disconnect
 from socket_manager import socketio
 from utils.timer import start_timer, cancel_timer
-from routes.rooms import rooms
+from routes.rooms_collaborative import rooms
 
 bp = Blueprint('drawing_collaborative', __name__)
 rooms_draw_history = {}
