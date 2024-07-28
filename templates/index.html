@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Real-Time Drawing App</title>
+    <title>Real-Time Drawing App - Competitive Mode</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Real-Time Drawing App</h1>
+            <h1>Real-Time Drawing App - Competitive Mode</h1>
         </header>
         <main>
             <div id="controls" class="controls">
@@ -19,7 +19,10 @@
                 <div id="room-info" class="info"></div>
                 <div id="user-list" class="info"></div>
             </div>
-            <canvas id="drawing-canvas" width="800" height="600"></canvas>
+            <div class="main-canvas-container">
+                <canvas id="drawing-canvas" width="800" height="600"></canvas>
+            </div>
+            <div id="user-canvases" class="user-canvases"></div>
         </main>
     </div>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
