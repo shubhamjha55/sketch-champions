@@ -13,7 +13,7 @@ canvas.style.display = 'none';
 document.getElementById('create-room').addEventListener('click', () => {
     roomId = prompt("Enter new room ID:");
     userId = prompt("Enter your name:");
-    fetch('/create_room', {
+    fetch('/create_room_collaborative', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -33,7 +33,7 @@ document.getElementById('create-room').addEventListener('click', () => {
 document.getElementById('join-room').addEventListener('click', () => {
     roomId = prompt("Enter room ID:");
     userId = prompt("Enter your name:");
-    fetch('/join_room', {
+    fetch('/join_room_collaborative', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ function joinRoom(roomId, userId) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
 
-    socket.emit('join_room', { room: roomId, user: userId });
+    socket.emit('join_room_collaborative', { room: roomId, user: userId });
 
     // Handle drawing on the canvas
     canvas.addEventListener('mousedown', (event) => {
@@ -66,14 +66,14 @@ function joinRoom(roomId, userId) {
         const y = event.offsetY;
         ctx.beginPath(); // Start a new path
         ctx.moveTo(x, y);
-        socket.emit('drawing', { room: roomId, user: userId, drawing_data: { x, y, pathStart: true } });
+        socket.emit('drawing_collaborative', { room: roomId, user: userId, drawing_data: { x, y, pathStart: true } });
     });
 
     canvas.addEventListener('mouseup', () => {
         if (!canDraw) return;
         drawing = false;
         ctx.closePath(); // Close the path
-        socket.emit('drawing', { room: roomId, user: userId, drawing_data: { pathEnd: true } });
+        socket.emit('drawing_collaborative', { room: roomId, user: userId, drawing_data: { pathEnd: true } });
     });
 
     canvas.addEventListener('mousemove', (event) => {
@@ -82,10 +82,10 @@ function joinRoom(roomId, userId) {
         const y = event.offsetY;
         ctx.lineTo(x, y);
         ctx.stroke();
-        socket.emit('drawing', { room: roomId, user: userId, drawing_data: { x, y, pathStart: false } });
+        socket.emit('drawing_collaborative', { room: roomId, user: userId, drawing_data: { x, y, pathStart: false } });
     });
 
-    socket.on('drawing', (data) => {
+    socket.on('drawing_collaborative', (data) => {
         const { x, y, pathStart, pathEnd } = data.drawing_data;
         if (pathStart) {
             ctx.beginPath(); // Start a new path
@@ -98,7 +98,7 @@ function joinRoom(roomId, userId) {
         }
     });
 
-    socket.on('draw_history', (data) => {
+    socket.on('draw_history_collaborative', (data) => {
         const history = data.history;
         history.forEach(draw => {
             const { x, y, pathStart, pathEnd } = draw;
@@ -114,25 +114,25 @@ function joinRoom(roomId, userId) {
         });
     });
 
-    socket.on('join_room_announcement', (data) => {
+    socket.on('join_room_announcement_collaborative', (data) => {
         const userList = document.getElementById('user-list');
         userList.innerHTML += `<p>${data.user} joined the room</p>`;
     });
 
-    socket.on('leave_room_announcement', (data) => {
+    socket.on('leave_room_announcement_collaborative', (data) => {
         const userList = document.getElementById('user-list');
         userList.innerHTML += `<p>${data.user} left the room</p>`;
     });
 
-    socket.emit('start_event', { room: roomId, duration: (60*60) });
+    socket.emit('start_event_collaborative', { room: roomId, duration: (60*60) });
 
-    socket.on('start_event', (data) => {
+    socket.on('start_event_collaborative', (data) => {
         const roomInfo = document.getElementById('room-info');
         roomInfo.innerHTML = `<p>Event started! Duration: ${data.duration} seconds</p>`;
         canDraw = true;
     });
 
-    socket.on('end_event', (data) => {
+    socket.on('end_event_collaborative', (data) => {
         drawing = false;
         canDraw = false;
         const roomInfo = document.getElementById('room-info');
@@ -140,7 +140,7 @@ function joinRoom(roomId, userId) {
         alert("Time's up! Drawing has been disabled.");
     });
 
-    socket.emit('request_draw_history', { room: roomId });
+    socket.emit('request_draw_history_collaborative', { room: roomId });
 
     // socket.on('disconnect', function(){
     //     socket.emit('leave_room', { room: roomId, user: userId });

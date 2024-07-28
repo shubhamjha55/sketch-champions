@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify
 import random
 
-bp = Blueprint('rooms', __name__)
+
+bp = Blueprint('rooms_collaborative', __name__)
 
 rooms = {}
 
-@bp.route('/create_room', methods=['POST'])
+@bp.route('/create_room_collaborative', methods=['POST'])
 def create_room():
     room_id = request.json.get('room_id')
     user = request.json.get('user')
@@ -15,7 +16,7 @@ def create_room():
     rooms[room_id] = [user]
     return jsonify({'message': f'Room {room_id} created successfully'})
 
-@bp.route('/join_room', methods=['POST'])
+@bp.route('/join_room_collaborative', methods=['POST'])
 def join_room():
     room_id = request.json.get('room_id')
     user = request.json.get('user')
@@ -27,7 +28,7 @@ def join_room():
         return jsonify({'message': f'User {user} joined room {room_id}', 'userId': user})
     return jsonify({'error': 'Room not found, Enter a valid Room Id'}), 404
 
-# @bp.route('/leave_room', methods=['POST'])
+# @bp.route('/leave_room_collaborative', methods=['POST'])
 # def leave_room():
 #     room_id = request.json.get('room_id')
 #     user = request.json.get('user')
