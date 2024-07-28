@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-Time Drawing App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Real-Time Drawing App</h1>
+        </header>
+        <main>
+            <div id="controls" class="controls">
+                <button id="create-room" class="btn">Create Room</button>
+                <button id="join-room" class="btn">Join Room</button>
+            </div>
+            <div id="info-panel" class="info-panel">
+                <div id="room-info" class="info"></div>
+                <div id="user-list" class="info"></div>
+            </div>
+            <canvas id="drawing-canvas" width="800" height="600"></canvas>
+        </main>
+    </div>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
